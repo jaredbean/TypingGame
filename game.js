@@ -1,6 +1,15 @@
 (function() {
-    $(document).ready(function(){
+    $(function(){
         var wordPool = ['Program', 'Console', 'JavaScript', 'Red', 'Blue', 'Green', 'Mouse', 'Pluto', 'Jupiter', 'Mars', 'Arrow'];
+
+        function init(){
+            // Initialize words
+        }
+
+        function word(){
+            
+        }
+
         function getRandomWord(){
         
             var randomIdx = Math.floor(Math.random() * wordPool.length);
@@ -10,56 +19,54 @@
             return randomWord;
         }
 
-        function compareWords(word, userWord){
-            var correctPart = '';
-            
-            var idx = 0;
-
-            word = word.toLower();
-            userWord = userWord.toLower();
-            // Compare user word with word letter by letter.
-            while(idx < userWord.length){
-                if (word[idx] === userWord[idx]){
-                    correctPart += word[idx];
-                }
-                else {
-                    break;
-                }
-                idx++;
-            }
-
-            // Check if the endo of the word was reached.
-            if (idx === word.length){
-                // The word is completed. Remove the word from the displayed words.
-            }
-            else {
-                // Replace the first part of the word with the strong part.
-                word.splice(0, idx, '<strong>' + correctPart + '</strong>');
-            }
-
-            return word;
+        /**
+         * Wraps the correct part of a word with HTML to highlight it.
+         * @param {string} word - The target word.
+         * @param {string} userWord - The user input.
+         */
+        function highlightWord(word, userWord){
+            return '<strong>' + word.slice(0, userWord.length) + '</strong>' + word.slice(userWord.length);
         }
         
         var $wordList = $('.word');
         $wordList.each(function (idx, value){
             var randomWord = getRandomWord();
+            var $el = $(this);
+            
+            $el.data('word',randomWord);
 
-            // Dataset is null here...
-            $(this).dataset['word'] = randomWord;
-            $(this).html(randomWord);
+            // html is a function 
+            $el.html(randomWord);
         });
 
 
         $('#userWord').keyup(function($evt){
             var userInput = $(this).val();
-            // Compare the word the word to the target words. Keep a count of the ones that have a match in them.
-            $wordList.each(function (idx, value){
-                $wordList[idx].html(compareWords($wordList[idx].dataset['word'], userInput));
-            })
+            
+            // get array of words that start with the user input.
+            var wordsToCheck = $.grep($wordList, function (word){
+                return $(word).data('word').toLowerCase().startsWith(userInput.toLowerCase());
+            });
 
-            // If none are a match, the game is over.
+            // Reset word list highlighting.
+            $wordList.each(function(idx,value){
+                $(value).html($(value).data('word'));
+            });
 
-            // if any contain the user input, keep allowing the user to add input.
+            if (wordsToCheck.length === 0){
+                //Reset user input because there are no words that match user input. Reset words
+                console.log('Reset user input.');
+
+                $('#userWord').val('');
+
+            }
+            else {
+                // Compare the word the word to the target words. Keep a count of the ones that have a match in them.
+                $(wordsToCheck).each(function (idx, value){
+                    var $currentWord = $(this);
+                    $currentWord.html(highlightWord($currentWord.data('word'), userInput));
+                })
+            }
         })
     });
 })();   
