@@ -1,22 +1,73 @@
 (function() {
     $(function(){
         var wordPool = ['Program', 'Console', 'JavaScript', 'Red', 'Blue', 'Green', 'Mouse', 'Pluto', 'Jupiter', 'Mars', 'Arrow'];
+        
+        var $wordList = $('.wordGroup');
+        var wordDtos = [];// Data transfer objects.
+
+        init();
 
         function init(){
-            // Initialize words
+            $wordList.each(function (idx, element){
+                wordDtos[idx] = word(idx);
+                var $el = $(element);
+                var $timer = $el.find('.timer');
+
+                $timer.data('life', wordDtos[idx].remainingTime)
+                
+                $el.data('word', wordDtos[idx].word);
+                
+                $timer.html(wordDtos[idx].remainingTime)
+                // html is a function 
+                $el.append(wordDtos[idx].word);
+
+
+
+            });
         }
 
-        function word(){
-            
+        function word(elementIdx){
+            var newWordObj = {
+                word: getRandomWord(),
+                remainingTime: 5 // in seconds
+            };
+
+            newWordObj.intervalId = setInterval(function (){
+                if (newWordObj.remainingTime > 0){
+                    newWordObj.remainingTime--;
+                    $($wordList[elementIdx]).find('.timer').html(newWordObj.remainingTime);
+                }
+                else {
+                    clearInterval(newWordObj.intervalId);
+                    alert(newWordObj.word + ' died!');
+                    wordDtos.forEach(function (dto){
+                        if (dto.intervalId != newWordObj.intervalId){
+                            clearInterval(dto.intervalId);
+                        }
+                    })
+
+                }
+            }, 1000);
+
+            return newWordObj;
         }
 
+        /**
+         * Gets a random word that does not already exist in wordDtos.
+         */
         function getRandomWord(){
-        
             var randomIdx = Math.floor(Math.random() * wordPool.length);
             var randomWord = wordPool[randomIdx];
             
-            wordPool.splice(randomIdx, 1);
-            return randomWord;
+            // If there are any words in wordDtos that are the same as randomWord, return a recursive call to getRandomWord.
+            if (wordDtos.some(function (dto){
+                return dto.word === randomWord;
+            })){
+                return getRandomWord();
+            }
+            else {
+                return randomWord;
+            }
         }
 
         /**
@@ -27,26 +78,18 @@
         function highlightWord(word, userWord){
             return '<strong>' + word.slice(0, userWord.length) + '</strong>' + word.slice(userWord.length);
         }
-        
-        var $wordList = $('.word');
-        $wordList.each(function (idx, value){
-            var randomWord = getRandomWord();
-            var $el = $(this);
-            
-            $el.data('word',randomWord);
-
-            // html is a function 
-            $el.html(randomWord);
-        });
 
 
         $('#userWord').keyup(function($evt){
             var userInput = $(this).val();
             
             // get array of words that start with the user input.
-            var wordsToCheck = $.grep($wordList, function (word){
-                return $(word).data('word').toLowerCase().startsWith(userInput.toLowerCase());
+            var wordsToCheck = wordDtos.filter(function (dto){
+                return dto.word.toLowerCase().startsWith(userInput.toLowerCase());
             });
+            // var wordsToCheck = $.grep($wordList, function (word){
+            //     return $(word).data('word').toLowerCase().startsWith(userInput.toLowerCase());
+            // });
 
             // Reset word list highlighting.
             $wordList.each(function(idx,value){
