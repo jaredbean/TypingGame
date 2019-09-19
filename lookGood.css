@@ -1,0 +1,16 @@
+/*
+Lime Creme: #E7F7D4
+Green: #7FBD32
+Light Red: #EA202C
+Dark Red: #B8141F
+DARK: #34090C
+*/
+
+div {
+	color:  #EA202C;
+	background-color: #7FBD32;
+}
+
+table, th, td {
+  border: 1px solid black;
+}

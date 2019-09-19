@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<head>
+	<link rel="stylesheet" href="lookGood.css">
+</head>
 <html>
 	<body>
 		
@@ -38,6 +41,7 @@
 			
 			$result = $conn->query($sql);
 
+			echo "<div>";
 			if ($result->num_rows > 0) {
 				// output data of each row
 				$i = 1;
@@ -48,6 +52,7 @@
 			} else {
 				echo "0 results";
 			}
+			echo "</div>";
 			mysqli_close($conn);
 			
 		}
