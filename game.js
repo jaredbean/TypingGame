@@ -4,48 +4,101 @@
         
         var $wordList = $('.wordGroup');
         var wordDtos = [];// Data transfer objects.
+        var gameTimer = {
+            time: 0 // In seconds
+        };
+
+        
+        $('#userWord').keyup(onUserWordKeyup);
+
+        var isPlaying = true;
 
         init();
 
         function init(){
             $wordList.each(function (idx, element){
-                wordDtos[idx] = word(idx);
-                var $el = $(element);
-                var $timer = $el.find('.timer');
-
-                $timer.data('life', wordDtos[idx].remainingTime)
-                
-                $el.data('word', wordDtos[idx].word);
-                
-                $timer.html(wordDtos[idx].remainingTime)
-                // html is a function 
-                $el.append(wordDtos[idx].word);
-
-
-
+                wordDtos[idx] = word(idx, element);
             });
+
+            gameTimer.intervalId = setInterval(function (){
+                gameTimer.time++;
+                $('#gameTimer').html(gameTimer.time);
+            }, 1000);
+
+            $('#userWord').focus();
         }
 
-        function word(elementIdx){
+        /**
+         * Handler for keyup events. Checks displayed words and highlights correct portions of words.
+         * @param {event} $evt The event data.
+         */
+        function onUserWordKeyup($evt){
+            var userInput = $(this).val();
+            
+            // get array of words that start with the user input.
+            var wordsToHighlight = wordDtos.filter(function (dto){
+                return dto.word.toLowerCase().startsWith(userInput.toLowerCase());
+            });
+
+            // Reset word list highlighting.
+            $wordList.each(function(idx,value){
+                $(value).html($(value).data('word'));
+            });
+
+            if (wordsToHighlight.length === 0){
+                //Reset user input because there are no words that match user input. Reset words.
+                $('#userWord').val('');
+            }
+            else {
+                // Highlight matching words.
+                wordsToHighlight.forEach(function (dto){
+                    var wordHtml = highlightWord(dto.word, userInput);
+                    $(dto.$wordGroupElement).find('.word').html(wordHtml);
+
+                    if (dto.word.length === userInput.length){
+                        // Initialize new random word.
+                        clearInterval(dto.intervalId);
+
+                        wordDtos[dto.idx] = word(dto.idx, dto.$wordGroupElement);
+                        $('#userWord').val('');
+                    }
+                });
+            }
+        }
+
+        /**
+         * Creates a new word dto.
+         * @param {Number} wordGroupIdx The word group elements index.
+         * @param {$element} $wordGroupElement The word group element.
+         */
+        function word(wordGroupIdx, $wordGroupElement){
             var newWordObj = {
+                idx: wordGroupIdx,
+                $wordGroupElement: $wordGroupElement,
                 word: getRandomWord(),
-                remainingTime: 5 // in seconds
+                lifeTime: 10 // in seconds
             };
 
+            var $timer = $($wordGroupElement).find('.timer');
+            $timer.html(newWordObj.lifeTime);
+
+            var $word = $($wordGroupElement).find('.word');
+            $word.html(newWordObj.word);
+
             newWordObj.intervalId = setInterval(function (){
-                if (newWordObj.remainingTime > 0){
-                    newWordObj.remainingTime--;
-                    $($wordList[elementIdx]).find('.timer').html(newWordObj.remainingTime);
+                if (newWordObj.lifeTime > 0){
+                    newWordObj.lifeTime--;
+                    $timer.html(newWordObj.lifeTime);
                 }
                 else {
                     clearInterval(newWordObj.intervalId);
-                    alert(newWordObj.word + ' died!');
+                    alert(newWordObj.word + ' died! Game over!');
                     wordDtos.forEach(function (dto){
                         if (dto.intervalId != newWordObj.intervalId){
                             clearInterval(dto.intervalId);
                         }
-                    })
-
+                    });
+                    clearInterval(gameTimer.intervalId);
                 }
             }, 1000);
 
@@ -78,38 +131,5 @@
         function highlightWord(word, userWord){
             return '<strong>' + word.slice(0, userWord.length) + '</strong>' + word.slice(userWord.length);
         }
-
-
-        $('#userWord').keyup(function($evt){
-            var userInput = $(this).val();
-            
-            // get array of words that start with the user input.
-            var wordsToCheck = wordDtos.filter(function (dto){
-                return dto.word.toLowerCase().startsWith(userInput.toLowerCase());
-            });
-            // var wordsToCheck = $.grep($wordList, function (word){
-            //     return $(word).data('word').toLowerCase().startsWith(userInput.toLowerCase());
-            // });
-
-            // Reset word list highlighting.
-            $wordList.each(function(idx,value){
-                $(value).html($(value).data('word'));
-            });
-
-            if (wordsToCheck.length === 0){
-                //Reset user input because there are no words that match user input. Reset words
-                console.log('Reset user input.');
-
-                $('#userWord').val('');
-
-            }
-            else {
-                // Compare the word the word to the target words. Keep a count of the ones that have a match in them.
-                $(wordsToCheck).each(function (idx, value){
-                    var $currentWord = $(this);
-                    $currentWord.html(highlightWord($currentWord.data('word'), userInput));
-                })
-            }
-        })
     });
 })();   
