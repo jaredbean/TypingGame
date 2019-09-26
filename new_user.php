@@ -16,27 +16,10 @@ error_reporting(E_ALL);
 <body>
 
 <?php
-
 if (isset($_POST['btnSignUp'])) {
-    // Database credentials
-    $hostname = "sql201.epizy.com";
-    $username = "epiz_24388369";
-    $password = "weberstudent1";
-    $db_name = "epiz_24388369_cs3750_names";
-
-    // Create connection
-    $conn = mysqli_connect($hostname, $username, $password, $db_name);
-
-    // Check connection
-    if (!$conn) {
-        die("Connection to database failed: " . mysqli_connect_error());
-    } else {
-        echo "Connected to database successfully";
-    }
-
+    require_once 'db_connection.php';
     $query = "INSERT INTO authentication (username, salt, hashed_password) 
-              VALUES ('{$_POST['username']}', '{$_POST['salt']}', '{$_POST['hashedPassword']}')";
-    
+              VALUES ('{$_POST['username']}', '{$_POST['salt']}', '{$_POST['hashedPassword']}')";    
     mysqli_query($conn, $query) or die(msqli_error($conn));
 
     if (isset($_POST['username'])) {
@@ -44,7 +27,6 @@ if (isset($_POST['btnSignUp'])) {
         echo "Username: {$_POST['username']} <br>"; 
         echo "Salt: {$_POST['salt']} <br>";
         echo "Hashed Password: {$_POST['hashedPassword']} <br>";
-
         echo "<br><br>INSERTED INTO DATABASE<br><br>";
     }    
 }

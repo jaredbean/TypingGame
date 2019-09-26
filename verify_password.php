@@ -16,28 +16,10 @@ error_reporting(E_ALL);
 <body>
 
 <?php
-
-// Database credentials
-$hostname = "sql201.epizy.com";
-$username = "epiz_24388369";
-$password = "weberstudent1";
-$db_name = "epiz_24388369_cs3750_names";
-
-// Create connection
-$conn = mysqli_connect($hostname, $username, $password, $db_name);
-
-// Check connection
-if (!$conn) {
-    die("Connection to database failed: " . mysqli_connect_error());
-} else {
-    echo "Connected to database successfully";
-}
+require_once 'db_connection.php';
 
   if (isset($_POST['username'])) {
-    
-    $user = $_POST['username'];
-    $query = "SELECT salt FROM authentication WHERE username = '$user'";
-
+    $query = "SELECT salt FROM authentication WHERE username = '{$_POST['username']}'";
     $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
     $row = mysqli_fetch_array($results, MYSQLI_ASSOC);
     $salt = $row['salt'];
@@ -47,8 +29,9 @@ if (!$conn) {
   if (isset($_POST['hashedPassword'])) {
     echo "<br>PASSWORD: {$_POST['password']}";
     echo "<br>HASHED PASSWORD: {$_POST['hashedPassword']}";
-
-    $query = "SELECT * FROM authentication WHERE hashed_password = '{$_POST['hashedPassword']}'";
+    
+    $query = "SELECT * FROM authentication WHERE username = '{$_POST['username']}'
+        AND hashed_password = '{$_POST['hashedPassword']}'";
     $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
     if ($results->num_rows > 0) {
@@ -56,18 +39,17 @@ if (!$conn) {
     } else {
         echo "<br>Password doesn't match.";
     }
-
   }
 ?>
 
 <form action="" method="post">
     <label for="password">Password:</label>
     <input type="text" id="password" name="password"><br>
+    <input type="hidden" id="username" name="username" value="<?=$_POST['username']?>">
     <input type="hidden" id="salt" name="salt" value="<?=$salt?>">
     <input type="hidden" id="hashedPassword" name="hashedPassword" value="">
     <input type="submit" value="Login" onclick="hashExistingPassword()">
 </form>
-
 
 </body>
 </html>
