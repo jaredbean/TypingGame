@@ -1,4 +1,4 @@
-function hashPassword() {
+function hashNewPassword() {
     let password = document.getElementById("password").value;
     let salt = generateSalt();
     let hashedPassword = SHA256(password + salt);
@@ -25,4 +25,11 @@ function generateSalt() {
     }
 
     return salt;
+}
+
+function hashExistingPassword() {
+    let password = document.getElementById("password").value;
+    let salt = document.getElementById("salt").value;
+    let hashedPassword = SHA256(password + salt);
+    document.getElementById("hashedPassword").value = hashedPassword;
 }

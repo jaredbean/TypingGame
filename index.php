@@ -15,25 +15,57 @@ error_reporting(E_ALL);
 </head>
 <body>
 
+<?php
+  // if (isset($_POST['username'])) {
+  //   // Database credentials
+  //   $hostname = "sql201.epizy.com";
+  //   $username = "epiz_24388369";
+  //   $password = "weberstudent1";
+  //   $db_name = "epiz_24388369_cs3750_names";
+
+  //   // Create connection
+  //   $conn = mysqli_connect($hostname, $username, $password, $db_name);
+
+  //   // Check connection
+  //   if (!$conn) {
+  //       die("Connection to database failed: " . mysqli_connect_error());
+  //   } else {
+  //       echo "Connected to database successfully";
+  //   }
+  //   $user = $_POST['username'];
+  //   $query = "SELECT salt FROM authentication WHERE username = '$user'";
+
+  //   $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
+  //   $row = mysqli_fetch_array($results, MYSQLI_ASSOC);
+  //   $salt = $row['salt'];
+  //   echo "<br>Salt: $salt";
+
+  //   // if (isset($_POST['username'])) {
+  //   //     echo "<br><br> Posted to the server: <br><br>";
+  //   //     echo "Username: {$_POST['username']} <br>"; 
+  //   //     echo "Salt: {$_POST['salt']} <br>";
+  //   //     echo "Hashed Password: {$_POST['hashedPassword']} <br>";
+  //   //}  
+  // }
+?>
+
 <h1>Keyboard Typing Game</h1>
 
-<form action="" method="post" id="formLogin">
+<form action="verify_password.php" method="post" id="formLogin">
   <label for="username">Username:</label>
   <input type="text" id="username" name="username"><br>
-  <label for="password">Password:</label>
-  <input type="text" id="password" name="password"><br>
-  <input type="hidden" value="" id="salt" name="salt">
-  <input type="hidden" value="" id="hashedPassword" name="hashedPassword">
-  <input type="submit" value="Create Account" id="btnSignUp" name="btnSignUp" onclick="hashPassword()">
+  <input type="submit" value="Login" id="btnLogin" name="btnLogin">
 </form>
 
+<p><a href="new_user.php">Sign up</a> for an account</p>
+
 <?php // Debugging
-if (isset($_POST['username'])) {
-  echo "<br><br> Posted to the server: <br><br>";
-  echo "Username: {$_POST['username']} <br>"; 
-  echo "Salt: {$_POST['salt']} <br>";
-  echo "Hashed Password: {$_POST['hashedPassword']} <br>";
-}
+// if (isset($_POST['username'])) {
+//   echo "<br><br> Posted to the server: <br><br>";
+//   echo "Username: {$_POST['username']} <br>"; 
+//   echo "Salt: {$_POST['salt']} <br>";
+//   echo "Hashed Password: {$_POST['hashedPassword']} <br>";
+// }
 ?>
 
 </body>
