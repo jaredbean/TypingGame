@@ -1,6 +1,10 @@
 (function() {
     $(function(){
-        var wordPool = ['Program', 'Console', 'JavaScript', 'Red', 'Blue', 'Green', 'Mouse', 'Pluto', 'Jupiter', 'Mars', 'Arrow'];
+        var wordPool = getDictionary();
+
+        if (wordPool) {
+            wordPool = ['Program', 'Console', 'JavaScript', 'Red', 'Blue', 'Green', 'Mouse', 'Pluto', 'Jupiter', 'Mars', 'Arrow'];
+        }
         
         var $wordList = $('.wordGroup');
         var wordDtos = [];// Data transfer objects.
