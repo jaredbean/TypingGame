@@ -12,5 +12,10 @@ div {
 }
 
 table, th, td {
-  border: 1px solid black;
+	border: 1px solid black;
+}
+
+#big-text {
+	color: #EA202C;
+	font-size: 40px;
 }
