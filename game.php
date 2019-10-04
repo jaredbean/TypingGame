@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Typing Game</title>
+        <link rel="stylesheet" href="styles.css">
             <?php
                 // Get array.
                 $serverName = "localhost";
@@ -29,6 +30,7 @@
         <script>
                 var myArray = <?php echo json_encode($array) ?>; 
                 function getDictionary(){
+                    console.log(myArray);
                     return myArray;
                 }
         </script>
@@ -42,24 +44,29 @@
         <div>
             <span>Time:</span> <span id="gameTimer"></span>
         </div>
-        <span id="wordGroup1" class="wordGroup">
-            <div id="timer1" class="timer"></div>
+        <span class="wordGroup">
+            <div class="timer"></div>
+            <div class="lifebar" style="height:15px;width:20px;background-color:#33aa33"></div>
             <span class="word"></span>
         </span>
-        <span id="wordGroup1" class="wordGroup">
-            <div id="timer1" class="timer"></div>
+        <span class="wordGroup">
+            <div class="timer"></div>
+            <div class="lifebar" style="height:15px;width:20px;background-color:#33aa33"></div>
             <span class="word"></span>
         </span>
-        <span id="wordGroup1" class="wordGroup">
-            <div id="timer1" class="timer"></div>
+        <span class="wordGroup">
+            <div class="timer"></div>
+            <div class="lifebar" style="height:15px;width:20px;background-color:#33aa33"></div>
             <span class="word"></span>
         </span>
-        <span id="wordGroup1" class="wordGroup">
-            <div id="timer1" class="timer"></div>
+        <span class="wordGroup">
+            <div class="timer"></div>
+            <div class="lifebar" style="height:15px;width:20px;background-color:#33aa33"></div>
             <span class="word"></span>
         </span>
-        <span id="wordGroup1" class="wordGroup">
-            <div id="timer1" class="timer"></div>
+        <span class="wordGroup">
+            <div class="timer"></div>
+            <div class="lifebar" style="height:15px;width:20px;background-color:#33aa33"></div>
             <span class="word"></span>
         </span>
         <div>

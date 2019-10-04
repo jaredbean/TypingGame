@@ -1,8 +1,10 @@
 (function() {
     $(function(){
         var wordPool = getDictionary();
+        var maxLifebarWidth = 30;
+        var maxLifeTime = 10;
 
-        if (wordPool) {
+        if (!wordPool) {
             wordPool = ['Program', 'Console', 'JavaScript', 'Red', 'Blue', 'Green', 'Mouse', 'Pluto', 'Jupiter', 'Mars', 'Arrow'];
         }
         
@@ -29,7 +31,8 @@
                 $('#gameTimer').html(gameTimer.time);
             }, 1000);
 
-            $('#userWord').focus();
+            var test = $('#userWord')
+            test[0].focus();
         }
 
         /**
@@ -80,11 +83,17 @@
                 idx: wordGroupIdx,
                 $wordGroupElement: $wordGroupElement,
                 word: getRandomWord(),
-                lifeTime: 10 // in seconds
+                lifeTime: maxLifeTime, // in seconds
+                lifebarWidth: maxLifebarWidth
             };
 
             var $timer = $($wordGroupElement).find('.timer');
             $timer.html(newWordObj.lifeTime);
+
+            var $lifebar = $($wordGroupElement).find('.lifebar');
+            $lifebar.css('height', 10);
+            $lifebar.css('width', maxLifebarWidth);
+            $lifebar.css('background-color', '#33aa33');
 
             var $word = $($wordGroupElement).find('.word');
             $word.html(newWordObj.word);
@@ -93,6 +102,22 @@
                 if (newWordObj.lifeTime > 0){
                     newWordObj.lifeTime--;
                     $timer.html(newWordObj.lifeTime);
+
+                    newWordObj.lifebarWidth = (newWordObj.lifeTime / maxLifeTime) * maxLifebarWidth
+                    var color = '#33aa33'
+                    if (newWordObj.lifeTime <= .5 * maxLifeTime){
+                        color = '#aa9933';
+                    }
+                    
+                    if (newWordObj.lifeTime <= .25 * maxLifeTime){
+                        color = '#aa3333';
+                    }
+
+                    $lifebar.animate({
+                        width: newWordObj.lifebarWidth
+                    });
+
+                    $lifebar.css('background-color', color);
                 }
                 else {
                     clearInterval(newWordObj.intervalId);
