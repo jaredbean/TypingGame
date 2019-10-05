@@ -25,6 +25,16 @@ error_reporting(E_ALL);
 
 <p><a href="new_user.php">Sign up</a> for an account</p>
 
+
+<?php
+
+// Debugging
+  // if (isset($_POST['username'])) {
+  //   echo "<br><br> Username was set with POST as {$_POST['username']}";
+  // }
+  
+?>
+
 </body>
 </html>
 

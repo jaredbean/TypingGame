@@ -6,10 +6,10 @@ function hashNewPassword() {
     document.getElementById("hashedPassword").value = hashedPassword;
 
     // Debugging
-    console.log("Username: " + username);
-    console.log("Password: " + password);
-    console.log("Salt: " + salt);
-    console.log("Hashed Password: " + hashedPassword);
+    // console.log("Username: " + username);
+    // console.log("Password: " + password);
+    // console.log("Salt: " + salt);
+    // console.log("Hashed Password: " + hashedPassword);
 }
 
 function generateSalt() {
