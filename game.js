@@ -1,5 +1,6 @@
 (function() {
     $(function(){
+        var username = getUsername();
         var wordPool = getDictionary();
         var maxLifebarWidth = 30;
         var maxLifeTime = 10;
@@ -17,11 +18,16 @@
         
         $('#userWord').keyup(onUserWordKeyup);
 
-        var isPlaying = true;
-
-        init();
+        if (username){
+            init();
+        }
+        else {
+            // Redirect to index.php
+            window.location.replace('/TypingGame');
+        }
 
         function init(){
+            $('.game').css('display', 'block');
             $wordList.each(function (idx, element){
                 wordDtos[idx] = word(idx, element);
             });
@@ -122,6 +128,18 @@
                 else {
                     clearInterval(newWordObj.intervalId);
                     alert(newWordObj.word + ' died! Game over!');
+
+                    $.post('new_high_score.php', { username: username, score: gameTimer.time }, 
+                        // On success.
+                        function (result){
+                            if (result){
+                                console.log('score saved');
+    
+                                // window.location.href = ;
+                            }
+                        }
+                    );
+
                     wordDtos.forEach(function (dto){
                         if (dto.intervalId != newWordObj.intervalId){
                             clearInterval(dto.intervalId);
