@@ -18,12 +18,14 @@ DARK: #34090C
 
 div {
 	color:  #EA202C;
-	background-color: #7FBD32;
+	background-color: #E7F7D4;
 }
 
 table, th, td {
-	border: 1px solid black;
-}
+	border: 1px solid #34090C;
+	background-color: #7FBD32;
+	color: #B8141F;
+	width: 500px;}
 
 #big-text {
 	color: #EA202C;
