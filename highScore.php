@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 <head>
 	<link rel="stylesheet" href="lookGood.css">
 	<script>
-		var username = <?php echo json_encode($username)); ?>;
+		var username = <?php echo json_encode($username)) ?>;
 		if (!username){
 			window.location.replace('/TypingGame');
 		}
