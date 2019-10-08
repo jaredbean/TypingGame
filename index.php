@@ -10,6 +10,7 @@ error_reporting(E_ALL);
   <meta charset="UTF-8">
   <title>Keyboard Typing Game</title>
   <style></style>
+  <link rel="stylesheet" href="lookGood.css">
   <script type="text/javascript" src="sha256.js"></script>
   <script type="text/javascript" src="login.js"></script>
 </head>

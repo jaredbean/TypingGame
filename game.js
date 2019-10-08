@@ -129,7 +129,8 @@
                     clearInterval(newWordObj.intervalId);
                     alert(newWordObj.word + ' died! Game over!');
 
-                    // Save high score via ajax.
+                    // window.location.href = 'highScore.php';
+
                     $.ajax({
                         type: "POST",
                         url: 'new_high_score.php', 

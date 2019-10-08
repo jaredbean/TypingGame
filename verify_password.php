@@ -10,6 +10,7 @@ error_reporting(E_ALL);
   <meta charset="UTF-8">
   <title>Keyboard Typing Game</title>
   <style></style>
+  <link rel="stylesheet" href="lookGood.css">
   <script type="text/javascript" src="sha256.js"></script>
   <script type="text/javascript" src="login.js"></script>
 </head>
@@ -46,7 +47,7 @@ require_once 'db_connection.php';
             <!-- Creates a new form with username and automatically submits via POST to game.php -->
             <form action="game.php" method="post" id="usernameForm">
                 <input type="hidden" id="username" name="username" value=<?=$_POST['username']?>>
-                <input type="submit" value="Start Game">
+                <input type="submit" id="startGame" value="Start Game" style="visibility: hidden;">
             </form>
             <script>document.getElementById("usernameForm").submit();</script>
         <?php
@@ -60,7 +61,7 @@ require_once 'db_connection.php';
 <!-- Form that gets password from user and runs hashExistingPassword() -->
 <form action="" method="post">
     <label for="password">Password:</label>
-    <input type="text" id="password" name="password" required><br>
+    <input type="password" id="password" name="password" required><br>
     <input type="hidden" id="username" name="username" value="<?=$_POST['username']?>">
     <input type="hidden" id="salt" name="salt" value="<?=$salt?>">
     <input type="hidden" id="hashedPassword" name="hashedPassword" value="">

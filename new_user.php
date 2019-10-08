@@ -10,6 +10,7 @@ error_reporting(E_ALL);
   <meta charset="UTF-8">
   <title>Keyboard Typing Game</title>
   <style></style>
+  <link rel="stylesheet" href="lookGood.css">
   <script type="text/javascript" src="sha256.js"></script>
   <script type="text/javascript" src="login.js"></script>
 </head>
@@ -39,7 +40,7 @@ if (isset($_POST['btnSignUp'])) {
             <!-- Creates a new form with username and automatically submits via POST to game.php -->
             <form action="game.php" method="post" id="usernameForm">
               <input type="hidden" id="username" name="username" value=<?=$_POST['username']?>>
-              <input type="submit" value="Start Game">
+              <input type="submit" value="Start Game" style="visibility: hidden;">
             </form>
             <script>document.getElementById("usernameForm").submit();</script>
         <?php
@@ -51,7 +52,7 @@ if (isset($_POST['btnSignUp'])) {
   <label for="username">Username:</label>
   <input type="text" id="username" name="username" required><br>
   <label for="password">Password:</label>
-  <input type="text" id="password" name="password" required><br>
+  <input type="password" id="password" name="password" required><br>
   <input type="hidden" value="" id="salt" name="salt">
   <input type="hidden" value="" id="hashedPassword" name="hashedPassword">
   <input type="submit" value="Create Account" id="btnSignUp" name="btnSignUp" onclick="hashNewPassword()">
