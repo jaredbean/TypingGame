@@ -129,16 +129,23 @@
                     clearInterval(newWordObj.intervalId);
                     alert(newWordObj.word + ' died! Game over!');
 
-                    $.post('new_high_score.php', { username: username, score: gameTimer.time }, 
+                    // Save high score via ajax.
+                    $.ajax({
+                        type: "POST",
+                        url: 'new_high_score.php', 
+                        data: { username: username, score: gameTimer.time },
+                        dataType: "json",
                         // On success.
-                        function (result){
-                            if (result){
+                        success: function (result){
                                 console.log('score saved');
     
-                                // window.location.href = ;
-                            }
+                                window.location.href = 'highScore.php';
+                        },
+                        error: function (error){
+                            console.log(error);
+                            console.log('fail')
                         }
-                    );
+                    });
 
                     wordDtos.forEach(function (dto){
                         if (dto.intervalId != newWordObj.intervalId){

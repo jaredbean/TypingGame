@@ -9,8 +9,14 @@
 
     if (!isset($_POST['error'])) {
         // Code to add a new score to the high scores table
+        $sql = "Insert Into ScoreBox (name, score) Values ('" . $_POST['username'] . "', '" . $_POST['score'] . "');";
 
-        $result['success'] = 'success';
+        if (mysqli_query($conn, $sql)){
+            $result['success'] = 'success';
+        }
+        else {
+            $result['error'] = "Error: " . $sql . mysqli_error($conn);
+        }
     }
 
     echo json_encode($result);

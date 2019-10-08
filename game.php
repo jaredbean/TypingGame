@@ -1,15 +1,15 @@
+<?php
+    // Start session to store username.
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Typing Game</title>
+        <link rel="stylesheet" href="lookGood.css">
         <link rel="stylesheet" href="styles.css">
             <?php
                 require_once 'db_connection.php';
-
-                // Check connection
-                if ($conn->connect_error) {
-                    die("Connection failed: " . mysqli_connect_error());
-                }
                 
                 // Get word pool.
                 $query = "SELECT word FROM Word ORDER BY word DESC";
@@ -21,16 +21,13 @@
                     array_push($array, $row['word']);
                 }
                 
-                // Start session to store username.
-                session_start();
-                
                 if (isset($_POST['username'])){
                     $_SESSION['typingGameUsername'] = $_POST['username'];
                 }
                 $username = $_SESSION['typingGameUsername'];
             ?>
         <script>
-                var username = <?php echo json_encode(($username)) ?>;
+                var username = <?php echo json_encode($username) ?>;
                 var myArray = <?php echo json_encode($array) ?>; 
 
                 function getUsername(){
