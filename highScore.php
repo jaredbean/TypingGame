@@ -39,7 +39,7 @@
 				echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 			}
 			
-			$sql = "SELECT name, score FROM ScoreBox ORDER BY name DESC LIMIT 10";
+			$sql = "SELECT score FROM ScoreBox WHERE name equals ('". $_POST['name'] . "') ORDER BY score DESC LIMIT 10";
 			
 			$result = $conn->query($sql);
 
@@ -48,7 +48,7 @@
 				// output data of each row
 				$i = 1;
 				while($row = $result->fetch_assoc()) {
-					echo "" . $i . ".\t" . $row["name"]. "<br>";
+					echo "" . $i . ".\t" . $row["score"]. "<br>";
 					$i++;
 				}
 			} else {

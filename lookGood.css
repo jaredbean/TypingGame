@@ -6,6 +6,16 @@ Dark Red: #B8141F
 DARK: #34090C
 */
 
+
+* {
+	margin: auto;
+	padding: 5px;
+	text-align: center;
+	color: green;
+	background-color: #E7F7D4;
+}
+
+
 div {
 	color:  #EA202C;
 	background-color: #7FBD32;
@@ -18,4 +28,8 @@ table, th, td {
 #big-text {
 	color: #EA202C;
 	font-size: 40px;
+}
+
+html {
+	background-color: #B8141F;
 }
