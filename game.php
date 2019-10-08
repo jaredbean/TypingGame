@@ -29,8 +29,6 @@
                 }
                 $username = $_SESSION['typingGameUsername'];
             ?>
-            <?php
-            ?>
         <script>
                 var username = <?php echo json_encode(($username)) ?>;
                 var myArray = <?php echo json_encode($array) ?>; 
