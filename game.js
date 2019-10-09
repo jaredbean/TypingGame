@@ -124,14 +124,16 @@
                     color = '#aa3333';
                 }
 
-                $lifebar.animate({
-                    width: newWordObj.lifebarWidth
-                });
+                if (newWordObj.lifeTime >= 0){
+                    $lifebar.animate({
+                        width: newWordObj.lifebarWidth
+                    });
+                }
 
                 $lifebar.css('background-color', color);
                 
                 // When the word dies... 
-                if (newWordObj.lifeTime <= 0) {
+                if (newWordObj.lifeTime < 0) {
 
                     // Hide the life bar.
                     $lifebar.animate({
