@@ -7,7 +7,7 @@
     <head>
         <title>Typing Game</title>
         <link rel="stylesheet" href="lookGood.css">
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="gameStyles.css">
             <?php
                 require_once 'db_connection.php';
                 
@@ -44,12 +44,14 @@
         <script src="game.js"></script>
     </head>
     <body>
-        <h1>Typing Game</h1>
-        <div class="user-info"></div>
-        <div class="game">
-            <div>
+            <div class="gameTimerGroup">
                 <span>Time:</span> <span id="gameTimer"></span>
             </div>
+        <h1>
+            Typing Game
+        </h1>
+        <div class="userInfo"></div>
+        <div class="game">
             <span class="wordGroup">
                 <div class="timer"></div>
                 <div class="lifebar" style="height:15px;width:20px;background-color:#33aa33"></div>

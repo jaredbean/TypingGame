@@ -2,12 +2,8 @@
     $(function(){
         var username = getUsername();
         var wordPool = getDictionary();
-        var maxLifebarWidth = 30;
+        var maxLifebarWidth = 40;
         var maxLifeTime = 10;
-
-        if (!wordPool) {
-            wordPool = ['Program', 'Console', 'JavaScript', 'Red', 'Blue', 'Green', 'Mouse', 'Pluto', 'Jupiter', 'Mars', 'Arrow'];
-        }
         
         var $wordList = $('.wordGroup');
         var wordDtos = [];// Data transfer objects.
@@ -22,11 +18,12 @@
             init();
         }
         else {
-            // Redirect to index.php
+            // If the username isn't found, redirect to the login screen.
             window.location.replace('/TypingGame');
         }
 
         function init(){
+            $('.userInfo').html('Username: ' + username);
             $('.game').css('display', 'block');
             $wordList.each(function (idx, element){
                 wordDtos[idx] = word(idx, element);
@@ -54,8 +51,8 @@
             });
 
             // Reset word list highlighting.
-            $wordList.each(function(idx,value){
-                $(value).html($(value).data('word'));
+            wordDtos.forEach(function(dto){
+                $(dto.$wordGroupElement).find('.word').html(dto.word);
             });
 
             if (wordsToHighlight.length === 0){
@@ -93,44 +90,58 @@
                 lifebarWidth: maxLifebarWidth
             };
 
+            // Display the word timer.
             var $timer = $($wordGroupElement).find('.timer');
             $timer.html(newWordObj.lifeTime);
 
+            // Display the lifebar.
             var $lifebar = $($wordGroupElement).find('.lifebar');
             $lifebar.css('height', 10);
             $lifebar.css('width', maxLifebarWidth);
             $lifebar.css('background-color', '#33aa33');
 
+            // Display word.
             var $word = $($wordGroupElement).find('.word');
             $word.html(newWordObj.word);
 
+            // Set interval function.
             newWordObj.intervalId = setInterval(function (){
-                if (newWordObj.lifeTime > 0){
-                    newWordObj.lifeTime--;
-                    $timer.html(newWordObj.lifeTime);
+                newWordObj.lifeTime--;
+                $timer.html(newWordObj.lifeTime);
 
-                    newWordObj.lifebarWidth = (newWordObj.lifeTime / maxLifeTime) * maxLifebarWidth
-                    var color = '#33aa33'
-                    if (newWordObj.lifeTime <= .5 * maxLifeTime){
-                        color = '#aa9933';
-                    }
-                    
-                    if (newWordObj.lifeTime <= .25 * maxLifeTime){
-                        color = '#aa3333';
-                    }
+                newWordObj.lifebarWidth = Math.floor((newWordObj.lifeTime / maxLifeTime) * maxLifebarWidth);
 
+                // Start the life bar color at green.
+                var color = '#33aa33'
+
+                // When the timer is at half of the full time change the color to a yellow color.
+                if (newWordObj.lifeTime <= .5 * maxLifeTime){
+                    color = '#aa9933';
+                }
+                
+                // When the timer is at a quarter for the max life time, change the color to red.
+                if (newWordObj.lifeTime <= .25 * maxLifeTime){
+                    color = '#aa3333';
+                }
+
+                $lifebar.animate({
+                    width: newWordObj.lifebarWidth
+                });
+
+                $lifebar.css('background-color', color);
+                
+                // When the word dies... 
+                if (newWordObj.lifeTime <= 0) {
+
+                    // Hide the life bar.
                     $lifebar.animate({
-                        width: newWordObj.lifebarWidth
+                        padding: '5px 0px'
                     });
 
-                    $lifebar.css('background-color', color);
-                }
-                else {
                     clearInterval(newWordObj.intervalId);
-                    alert(newWordObj.word + ' died! Game over!');
+                    alert(newWordObj.word + ' died! Game over!\nYour score was ' + gameTimer.time + ' seconds.');
 
-                    // window.location.href = 'highScore.php';
-
+                    // Use ajax to add the new high score to the database.
                     $.ajax({
                         type: "POST",
                         url: 'new_high_score.php', 
@@ -144,15 +155,17 @@
                         },
                         error: function (error){
                             console.log(error);
-                            console.log('fail')
                         }
                     });
 
+                    // Stop word timers.
                     wordDtos.forEach(function (dto){
                         if (dto.intervalId != newWordObj.intervalId){
                             clearInterval(dto.intervalId);
                         }
                     });
+
+                    // Stop game timer.
                     clearInterval(gameTimer.intervalId);
                 }
             }, 1000);
